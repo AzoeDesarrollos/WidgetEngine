@@ -1,14 +1,17 @@
 from pygame import Color
 from .resources import abrir_json
 
-opciones = {}
+try:
+    config = abrir_json('config/config.json')
+    opciones = {}
+    if config['use_colors'] != 'default':
+        opciones.update(abrir_json(config['use_colors']))
+
+except (FileNotFoundError, IOError):
+    opciones = {}
 
 try:
     import ctypes
-
-    config = abrir_json('config/config.json')
-    if config['use_colors'] != 'default':
-        opciones.update(abrir_json(config['use_colors']))
 
     # http://msdn.microsoft.com/en-us/library/windows/desktop/ms724371%28v=vs.85%29.aspx
     gc = ctypes.windll.user32.GetSysColor
@@ -34,12 +37,13 @@ try:
     sysScrBack = hexa(0)  # color de fondo de la barras de scroll
     sysScrArrow = hexa(9)  # color de las flechas de barras de scroll
 
-except (ValueError, IOError, KeyError, FileNotFoundError):
+except (ValueError, IOError, KeyError):
     sysElmFace = Color(*[125] * 3)  # color de frente de elementos
     sysElmShadow = Color(*[100] * 3)  # color del borde de abajo de elementos 3D (botones, etc)
     sysElmLight = Color(*[150] * 3)  # color del borde de arriba de elementos 3D
     sysElmText = Color(*[0] * 3)  # color de texto de elementos
-    sysDisText = Color((153, 168, 172))  # color de texto deshabilitado
+    # noinspection PyArgumentList
+    sysDisText = Color(153, 168, 172)  # color de texto deshabilitado
     sysBoxBack = Color(*[255] * 3)  # color para el fondo de cuadros (de texto, etc)
     # sysBoxBorder = Color(*[100] * 3)  # color de borde de cuadros
     # sysBoxText = Color(*[125] * 3)  # color de texto de cuadros
