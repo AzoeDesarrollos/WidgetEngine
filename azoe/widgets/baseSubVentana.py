@@ -1,8 +1,7 @@
 from azoe.libs.textrect import render_textrect
+from pygame import Rect, font, mouse, display
 from azoe.engine.colores import color
-from pygame import Rect, font, mouse
 from . import Marco, BotonCerrar
-from globales import ANCHO, ALTO
 
 
 class SubVentana(Marco):
@@ -10,7 +9,9 @@ class SubVentana(Marco):
 
     def __init__(self, w, h, nombre, titular=True):
         _r = Rect(0, 0, w, h)
-        _r.center = Rect(0, 0, ANCHO, ALTO).center
+        info = display.Info()
+        ancho, alto = info.current_w, info.current_h
+        _r.center = Rect(0, 0, ancho, alto).center
         x, y = _r.topleft
         super().__init__(x, y, w, h)
         self.px, self.py = self.rect.topleft
