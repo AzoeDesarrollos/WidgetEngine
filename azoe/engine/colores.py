@@ -2,10 +2,11 @@ from pygame import Color
 from .resources import abrir_json
 
 opciones = {}
-config = abrir_json('config/config.json')
+
 try:
     import ctypes
 
+    config = abrir_json('config/config.json')
     if config['use_colors'] != 'default':
         opciones.update(abrir_json(config['use_colors']))
 
@@ -33,7 +34,7 @@ try:
     sysScrBack = hexa(0)  # color de fondo de la barras de scroll
     sysScrArrow = hexa(9)  # color de las flechas de barras de scroll
 
-except (ValueError, IOError, KeyError):
+except (ValueError, IOError, KeyError, FileNotFoundError):
     sysElmFace = Color(*[125] * 3)  # color de frente de elementos
     sysElmShadow = Color(*[100] * 3)  # color del borde de abajo de elementos 3D (botones, etc)
     sysElmLight = Color(*[150] * 3)  # color del borde de arriba de elementos 3D
